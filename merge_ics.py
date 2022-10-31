@@ -36,6 +36,11 @@
 # Modified by David Koppstein
 # 1/11/11
 # Provide arguments via sys.argv (see below)
+#
+#############################
+# Modified by Abe Hanoka <abe@habet.dev>
+# 9/30/2022
+# update to icalendar v5.0.0
  
 import sys
 import os
@@ -92,7 +97,7 @@ for s in glob.glob(os.path.join(CALDIR, '*.ics')):
          # open the file and read it
          calfile = calhandle.read()
          if calfile != "":
-            cal = Calendar.from_string(calfile)
+            cal = Calendar.from_ical(calfile)
             # every part of the file...
             for component in cal.subcomponents:
                if component.name == 'VEVENT':
@@ -102,13 +107,13 @@ for s in glob.glob(os.path.join(CALDIR, '*.ics')):
             continue
       except:
          # if the file was not readable, we need a errormessage ;)
-         print MY_SHORTNAME + ": Error: reading file:", sys.exc_info()[1]
-         print s
+         print(MY_SHORTNAME + ": Error: reading file:", sys.exc_info()[1])
+         print(s)
  
 # After the loop, we have all of our data and can write the file now
 try:
    f = open(ICS_OUT, 'wb')
-   f.write(newcal.as_string())
+   f.write(newcal.to_ical())
    f.close()
 except:
-   print MY_SHORTNAME + ": Error: ", sys.exc_info()[1]
+   print(MY_SHORTNAME + ": Error: ", sys.exc_info()[1])
